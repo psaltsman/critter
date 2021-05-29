@@ -72,8 +72,7 @@ public class CritterApplicationsTest {
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
         PetDTO petDTO = createPetDTO();
-        petDTO.setOwnerId(newCustomer.getId());
-        PetDTO newPet = petController.savePet(petDTO);
+        PetDTO newPet = petController.savePet(newCustomer.getId(), petDTO);
 
         //make sure pet contains customer id
         PetDTO retrievedPet = petController.getPet(newPet.getId());
@@ -97,11 +96,10 @@ public class CritterApplicationsTest {
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
         PetDTO petDTO = createPetDTO();
-        petDTO.setOwnerId(newCustomer.getId());
-        PetDTO newPet = petController.savePet(petDTO);
+        PetDTO newPet = petController.savePet(newCustomer.getId(), petDTO);
         petDTO.setType(PetType.DOG);
         petDTO.setName("DogName");
-        PetDTO newPet2 = petController.savePet(petDTO);
+        PetDTO newPet2 = petController.savePet(newCustomer.getId(), petDTO);
 
         List<PetDTO> pets = petController.getPetsByOwner(newCustomer.getId());
         Assertions.assertEquals(pets.size(), 2);
@@ -115,8 +113,7 @@ public class CritterApplicationsTest {
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
 
         PetDTO petDTO = createPetDTO();
-        petDTO.setOwnerId(newCustomer.getId());
-        PetDTO newPet = petController.savePet(petDTO);
+        PetDTO newPet = petController.savePet(newCustomer.getId(), petDTO);
 
         CustomerDTO owner = userController.getOwnerByPet(newPet.getId());
         Assertions.assertEquals(owner.getId(), newCustomer.getId());
@@ -180,8 +177,7 @@ public class CritterApplicationsTest {
         EmployeeDTO employeeDTO = userController.saveEmployee(employeeTemp);
         CustomerDTO customerDTO = userController.saveCustomer(createCustomerDTO());
         PetDTO petTemp = createPetDTO();
-        petTemp.setOwnerId(customerDTO.getId());
-        PetDTO petDTO = petController.savePet(petTemp);
+        PetDTO petDTO = petController.savePet(customerDTO.getId(), petTemp);
 
         LocalDate date = LocalDate.of(2019, 12, 25);
         List<Long> petList = Lists.newArrayList(petDTO.getId());
@@ -293,8 +289,7 @@ public class CritterApplicationsTest {
         List<Long> petIds = IntStream.range(0, numPets)
                 .mapToObj(i -> createPetDTO())
                 .map(p -> {
-                    p.setOwnerId(cust.getId());
-                    return petController.savePet(p).getId();
+                    return petController.savePet(cust.getId(), p).getId();
                 }).collect(Collectors.toList());
         return scheduleController.createSchedule(createScheduleDTO(petIds, employeeIds, date, activities));
     }

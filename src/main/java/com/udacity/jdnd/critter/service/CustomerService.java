@@ -1,8 +1,8 @@
 package com.udacity.jdnd.critter.service;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.udacity.jdnd.critter.data.dto.user.CustomerDTO;
 import com.udacity.jdnd.critter.data.entity.Customer;
+import com.udacity.jdnd.critter.data.entity.Pet;
 import com.udacity.jdnd.critter.data.repository.CustomerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,37 +19,55 @@ public class CustomerService {
 
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
 
-        Customer customer = customerRepository.save(convertToEntity(customerDTO));
+        Customer customer = convertCustomerToEntity(customerDTO);
 
-        return convertToDTO(customer);
+        ArrayList<Pet> pets = new ArrayList<>();
+
+        customer.setPets(pets);
+
+        customer = customerRepository.save(customer);
+
+        return convertCustomerToDTO(customer);
     }
 
     public List<CustomerDTO> getAllCustomers() {
 
-        return convertList(customerRepository.findAll());
+        return convertCustomerToList(customerRepository.findAll());
     }
 
-    private Customer convertToEntity(CustomerDTO customerDTO) {
+    public Customer convertCustomerToEntity(CustomerDTO customerDTO) {
 
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
         return customer;
     }
 
-    private CustomerDTO convertToDTO(Customer customer) {
+    public CustomerDTO convertCustomerToDTO(Customer customer) {
+
+        System.out.println(customer.getId());
 
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
+
+        ArrayList<Long> petIds = new ArrayList<>();
+
+        for (Pet pet : customer.getPets()) {
+
+            petIds.add(pet.getId());
+        }
+
+        customerDTO.setPetIds(petIds);
+
         return customerDTO;
     }
 
-    private List<CustomerDTO> convertList(List<Customer> customers) {
+    public List<CustomerDTO> convertCustomerToList(List<Customer> customers) {
 
         ArrayList<CustomerDTO> toReturn = new ArrayList<>();
 
         for (Customer customer : customers) {
 
-            toReturn.add(convertToDTO(customer));
+            toReturn.add(convertCustomerToDTO(customer));
         }
 
         return toReturn;

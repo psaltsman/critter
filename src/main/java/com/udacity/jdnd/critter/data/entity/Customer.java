@@ -1,8 +1,7 @@
 package com.udacity.jdnd.critter.data.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -14,14 +13,18 @@ public class Customer {
     private String phoneNumber;
     private String notes;
 
+    @OneToMany(mappedBy = "customer", targetEntity = Pet.class)
+    private List<Pet> pets;
+
     public Customer() {
     }
 
-    public Customer(Long id, String name, String phoneNumber, String notes) {
+    public Customer(Long id, String name, String phoneNumber, String notes, List<Pet> pets) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.notes = notes;
+        this.pets = pets;
     }
 
     public Long getId() {
@@ -54,5 +57,13 @@ public class Customer {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 }

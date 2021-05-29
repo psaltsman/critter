@@ -3,8 +3,8 @@ package com.udacity.jdnd.critter.controller;
 import com.udacity.jdnd.critter.data.dto.user.CustomerDTO;
 import com.udacity.jdnd.critter.data.dto.user.EmployeeDTO;
 import com.udacity.jdnd.critter.data.dto.user.EmployeeRequestDTO;
-import com.udacity.jdnd.critter.data.repository.CustomerRepository;
 import com.udacity.jdnd.critter.service.CustomerService;
+import com.udacity.jdnd.critter.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +25,11 @@ public class UserController {
     @Autowired
     CustomerService customerService;
 
+    @Autowired
+    EmployeeService employeeService;
+
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
+    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
 
         return customerService.saveCustomer(customerDTO);
     }
@@ -44,12 +47,14 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+
+        return employeeService.saveEmployee(employeeDTO);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+
+        return employeeService.getEmployee(employeeId);
     }
 
     @PutMapping("/employee/{employeeId}")
