@@ -1,6 +1,6 @@
-package com.udacity.jdnd.critter.schedule;
+package com.udacity.jdnd.critter.data.dto.schedule;
 
-import com.udacity.jdnd.critter.user.EmployeeSkill;
+import com.udacity.jdnd.critter.data.enums.EmployeeSkill;
 
 import java.time.LocalDate;
 import java.util.List;

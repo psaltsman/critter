@@ -1,4 +1,6 @@
-package com.udacity.jdnd.critter.pet;
+package com.udacity.jdnd.critter.data.dto.pet;
+
+import com.udacity.jdnd.critter.data.enums.PetType;
 
 import java.time.LocalDate;
 
@@ -8,17 +10,17 @@ import java.time.LocalDate;
  */
 public class PetDTO {
     private long id;
-    private com.udacity.jdnd.critter.pet.PetType type;
+    private PetType type;
     private String name;
     private long ownerId;
     private LocalDate birthDate;
     private String notes;
 
-    public com.udacity.jdnd.critter.pet.PetType getType() {
+    public PetType getType() {
         return type;
     }
 
-    public void setType(com.udacity.jdnd.critter.pet.PetType type) {
+    public void setType(PetType type) {
         this.type = type;
     }
 

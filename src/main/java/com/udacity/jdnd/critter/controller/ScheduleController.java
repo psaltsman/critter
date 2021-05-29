@@ -1,5 +1,6 @@
-package com.udacity.jdnd.critter.schedule;
+package com.udacity.jdnd.critter.controller;
 
+import com.udacity.jdnd.critter.data.dto.schedule.ScheduleDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,27 +13,27 @@ import java.util.List;
 public class ScheduleController {
 
     @PostMapping
-    public com.udacity.jdnd.critter.schedule.ScheduleDTO createSchedule(@RequestBody com.udacity.jdnd.critter.schedule.ScheduleDTO scheduleDTO) {
+    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         throw new UnsupportedOperationException();
     }
 
     @GetMapping
-    public List<com.udacity.jdnd.critter.schedule.ScheduleDTO> getAllSchedules() {
+    public List<ScheduleDTO> getAllSchedules() {
         throw new UnsupportedOperationException();
     }
 
     @GetMapping("/pet/{petId}")
-    public List<com.udacity.jdnd.critter.schedule.ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         throw new UnsupportedOperationException();
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<com.udacity.jdnd.critter.schedule.ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
+    public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         throw new UnsupportedOperationException();
     }
 
     @GetMapping("/customer/{customerId}")
-    public List<com.udacity.jdnd.critter.schedule.ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
+    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
         throw new UnsupportedOperationException();
     }
 }
