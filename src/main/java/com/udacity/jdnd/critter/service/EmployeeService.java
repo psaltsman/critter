@@ -1,10 +1,7 @@
 package com.udacity.jdnd.critter.service;
 
-import com.google.common.collect.Sets;
-import com.udacity.jdnd.critter.data.dto.user.CustomerDTO;
 import com.udacity.jdnd.critter.data.dto.user.EmployeeDTO;
 import com.udacity.jdnd.critter.data.dto.user.EmployeeRequestDTO;
-import com.udacity.jdnd.critter.data.entity.Customer;
 import com.udacity.jdnd.critter.data.entity.Employee;
 import com.udacity.jdnd.critter.data.enums.EmployeeSkill;
 import com.udacity.jdnd.critter.data.repository.EmployeeRepository;
