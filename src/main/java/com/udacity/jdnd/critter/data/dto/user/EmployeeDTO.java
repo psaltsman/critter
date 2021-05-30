@@ -3,6 +3,7 @@ package com.udacity.jdnd.critter.data.dto.user;
 import com.udacity.jdnd.critter.data.enums.EmployeeSkill;
 
 import java.time.DayOfWeek;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -45,5 +46,18 @@ public class EmployeeDTO {
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDTO that = (EmployeeDTO) o;
+        return id == that.id && name.equals(that.name) && skills.equals(that.skills) && daysAvailable.equals(that.daysAvailable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, skills, daysAvailable);
     }
 }

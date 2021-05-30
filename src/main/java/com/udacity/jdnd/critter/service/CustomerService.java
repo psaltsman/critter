@@ -4,6 +4,7 @@ import com.udacity.jdnd.critter.data.dto.user.CustomerDTO;
 import com.udacity.jdnd.critter.data.entity.Customer;
 import com.udacity.jdnd.critter.data.entity.Pet;
 import com.udacity.jdnd.critter.data.repository.CustomerRepository;
+import com.udacity.jdnd.critter.data.repository.PetRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    PetRepository petRepository;
 
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
 
@@ -33,6 +37,13 @@ public class CustomerService {
     public List<CustomerDTO> getAllCustomers() {
 
         return convertCustomerToList(customerRepository.findAll());
+    }
+
+    public CustomerDTO getOwnerByPet(Long petId) {
+
+        Pet pet = petRepository.getById(petId);
+
+        return convertCustomerToDTO(pet.getCustomer());
     }
 
     public Customer convertCustomerToEntity(CustomerDTO customerDTO) {
