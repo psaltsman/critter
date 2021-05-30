@@ -1,35 +1,38 @@
 package com.udacity.jdnd.critter.service;
 
-import com.udacity.jdnd.critter.data.dto.user.EmployeeDTO;
 import com.udacity.jdnd.critter.data.dto.user.EmployeeRequestDTO;
 import com.udacity.jdnd.critter.data.entity.Employee;
 import com.udacity.jdnd.critter.data.enums.EmployeeSkill;
 import com.udacity.jdnd.critter.data.repository.EmployeeRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
+    public Employee getEmployeeById(Long employeeId) {
 
-        Employee employee = employeeRepository.save(convertEmployeeToEntity(employeeDTO));
-
-        return convertEmployeeToDTO(employee);
+        return employeeRepository.getById(employeeId);
     }
 
-    public EmployeeDTO getEmployee(Long id) {
+    public Employee saveEmployee(Employee employee) {
 
-        return convertEmployeeToDTO(employeeRepository.getById(id));
+        return employeeRepository.save(employee);
+    }
+
+    public Employee getEmployee(Long id) {
+
+        return employeeRepository.getById(id);
     }
 
     public void setAvailability(Set<DayOfWeek> availableDays, Long employeeId) {
@@ -41,13 +44,13 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public List<EmployeeDTO> findEmployeesForService(EmployeeRequestDTO employeeRequestDTO) {
+    public List<Employee> findEmployeesForService(EmployeeRequestDTO employeeRequestDTO) {
 
         DayOfWeek dayAvailable = employeeRequestDTO.getDate().getDayOfWeek();
 
         Set<EmployeeSkill> employeeSkills = employeeRequestDTO.getSkills();
 
-        ArrayList<EmployeeDTO> toReturn = new ArrayList<>();
+        ArrayList<Employee> toReturn = new ArrayList<>();
 
         List<Employee> availableEmployees = employeeRepository.findByDaysAvailableAndSkillsIn(dayAvailable, employeeSkills);
 
@@ -56,50 +59,10 @@ public class EmployeeService {
             //Only add the employees that have all of the requested skills for the requested day
             if (employee.getSkills().containsAll(employeeSkills)) {
 
-                EmployeeDTO toAdd = convertEmployeeToDTO(employee);
-
-                if (!toReturn.contains(toAdd)) {
-                    toReturn.add(toAdd);
+                if (!toReturn.contains(employee)) {
+                    toReturn.add(employee);
                 }
             }
-        }
-
-        return toReturn;
-    }
-
-    private Employee convertEmployeeToEntity(EmployeeDTO employeeDTO) {
-
-        Employee employee = new Employee();
-
-        BeanUtils.copyProperties(employeeDTO, employee);
-
-        employee.setDaysAvailable(employeeDTO.getDaysAvailable());
-
-        employee.setSkills(employeeDTO.getSkills());
-
-        return employee;
-    }
-
-    private EmployeeDTO convertEmployeeToDTO(Employee employee) {
-
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-
-        BeanUtils.copyProperties(employee, employeeDTO);
-
-        employeeDTO.setDaysAvailable(employee.getDaysAvailable());
-
-        employeeDTO.setSkills(employee.getSkills());
-
-        return employeeDTO;
-    }
-
-    private List<EmployeeDTO> convertEmployeeToList(List<Employee> employees) {
-
-        ArrayList<EmployeeDTO> toReturn = new ArrayList<>();
-
-        for (Employee employee : employees) {
-
-            toReturn.add(convertEmployeeToDTO(employee));
         }
 
         return toReturn;

@@ -1,18 +1,17 @@
 package com.udacity.jdnd.critter.service;
 
-import com.udacity.jdnd.critter.data.dto.user.CustomerDTO;
 import com.udacity.jdnd.critter.data.entity.Customer;
 import com.udacity.jdnd.critter.data.entity.Pet;
 import com.udacity.jdnd.critter.data.repository.CustomerRepository;
 import com.udacity.jdnd.critter.data.repository.PetRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerService {
 
     @Autowired
@@ -21,67 +20,25 @@ public class CustomerService {
     @Autowired
     PetRepository petRepository;
 
-    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
+    public Customer getCustomerById(Long customerId) {
 
-        Customer customer = convertCustomerToEntity(customerDTO);
-
-        ArrayList<Pet> pets = new ArrayList<>();
-
-        customer.setPets(pets);
-
-        customer = customerRepository.save(customer);
-
-        return convertCustomerToDTO(customer);
+        return customerRepository.getById(customerId);
     }
 
-    public List<CustomerDTO> getAllCustomers() {
+    public Customer saveCustomer(Customer customer) {
 
-        return convertCustomerToList(customerRepository.findAll());
+        return customerRepository.save(customer);
     }
 
-    public CustomerDTO getOwnerByPet(Long petId) {
+    public List<Customer> getAllCustomers() {
+
+        return customerRepository.findAll();
+    }
+
+    public Customer getOwnerByPet(Long petId) {
 
         Pet pet = petRepository.getById(petId);
 
-        return convertCustomerToDTO(pet.getCustomer());
-    }
-
-    private Customer convertCustomerToEntity(CustomerDTO customerDTO) {
-
-        Customer customer = new Customer();
-
-        BeanUtils.copyProperties(customerDTO, customer);
-
-        return customer;
-    }
-
-    private CustomerDTO convertCustomerToDTO(Customer customer) {
-
-        CustomerDTO customerDTO = new CustomerDTO();
-
-        BeanUtils.copyProperties(customer, customerDTO);
-
-        ArrayList<Long> petIds = new ArrayList<>();
-
-        for (Pet pet : customer.getPets()) {
-
-            petIds.add(pet.getId());
-        }
-
-        customerDTO.setPetIds(petIds);
-
-        return customerDTO;
-    }
-
-    private List<CustomerDTO> convertCustomerToList(List<Customer> customers) {
-
-        ArrayList<CustomerDTO> toReturn = new ArrayList<>();
-
-        for (Customer customer : customers) {
-
-            toReturn.add(convertCustomerToDTO(customer));
-        }
-
-        return toReturn;
+        return pet.getCustomer();
     }
 }
