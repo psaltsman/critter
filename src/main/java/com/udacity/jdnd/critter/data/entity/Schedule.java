@@ -5,6 +5,7 @@ import com.udacity.jdnd.critter.data.enums.EmployeeSkill;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -74,5 +75,18 @@ public class Schedule {
 
     public void setActivities(Set<EmployeeSkill> activities) {
         this.activities = activities;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Schedule schedule = (Schedule) o;
+        return id.equals(schedule.id) && employees.equals(schedule.employees) && pets.equals(schedule.pets) && date.equals(schedule.date) && activities.equals(schedule.activities);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, employees, pets, date, activities);
     }
 }

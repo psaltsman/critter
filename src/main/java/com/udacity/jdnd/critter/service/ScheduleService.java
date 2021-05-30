@@ -2,9 +2,11 @@ package com.udacity.jdnd.critter.service;
 
 import com.google.common.collect.Sets;
 import com.udacity.jdnd.critter.data.dto.schedule.ScheduleDTO;
+import com.udacity.jdnd.critter.data.entity.Customer;
 import com.udacity.jdnd.critter.data.entity.Employee;
 import com.udacity.jdnd.critter.data.entity.Pet;
 import com.udacity.jdnd.critter.data.entity.Schedule;
+import com.udacity.jdnd.critter.data.repository.CustomerRepository;
 import com.udacity.jdnd.critter.data.repository.EmployeeRepository;
 import com.udacity.jdnd.critter.data.repository.PetRepository;
 import com.udacity.jdnd.critter.data.repository.ScheduleRepository;
@@ -27,6 +29,9 @@ public class ScheduleService {
     @Autowired
     PetRepository petRepository;
 
+    @Autowired
+    CustomerRepository customerRepository;
+
     public ScheduleDTO createSchedule(ScheduleDTO scheduleDTO) {
 
         Schedule schedule = scheduleRepository.save(convertScheduleToEntity(scheduleDTO));
@@ -39,6 +44,54 @@ public class ScheduleService {
         List<Schedule> schedules = scheduleRepository.findAll();
 
         return convertScheduleToList(schedules);
+    }
+
+    public List<ScheduleDTO> getScheduleForEmployee(Long employeeId) {
+
+        Employee employee = employeeRepository.getById(employeeId);
+
+        List<Schedule> schedules = scheduleRepository.findByEmployees(employee);
+
+        return convertScheduleToList(schedules);
+    }
+
+    public List<ScheduleDTO> getScheduleForPet(Long petId) {
+
+        Pet pet = petRepository.getById(petId);
+
+        List<Schedule> schedules = scheduleRepository.findByPets(pet);
+
+        return convertScheduleToList(schedules);
+    }
+
+    public List<ScheduleDTO> getScheduleForCustomer(Long customerId) {
+
+        //Returned list of schedules for this customer's pets
+        ArrayList<ScheduleDTO> toReturn = new ArrayList<>();
+
+        //Get the customer entity
+        Customer customer = customerRepository.getById(customerId);
+
+        //Get all of their pets
+        List<Pet> pets = customer.getPets();
+
+        //For each pet look up their schedule and add it to the return list
+        for (Pet pet : pets) {
+
+            List<Schedule> thisPetSchedule = scheduleRepository.findByPets(pet);
+
+            for (Schedule scedule : thisPetSchedule) {
+
+                ScheduleDTO scheduleDTO = convertScheduleToDTO(scedule);
+
+                if (!toReturn.contains(scheduleDTO)) {
+
+                    toReturn.add(scheduleDTO);
+                }
+            }
+        }
+
+        return toReturn;
     }
 
     private Schedule convertScheduleToEntity(ScheduleDTO scheduleDTO) {
