@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Pet {
@@ -82,5 +83,18 @@ public class Pet {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return id.equals(pet.id) && type == pet.type && name.equals(pet.name) && customer.equals(pet.customer) && birthDate.equals(pet.birthDate) && notes.equals(pet.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, name, customer, birthDate, notes);
     }
 }

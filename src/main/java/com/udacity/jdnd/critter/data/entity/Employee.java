@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -64,5 +65,18 @@ public class Employee {
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id.equals(employee.id) && name.equals(employee.name) && skills.equals(employee.skills) && daysAvailable.equals(employee.daysAvailable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, skills, daysAvailable);
     }
 }

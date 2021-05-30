@@ -46,18 +46,19 @@ public class CustomerService {
         return convertCustomerToDTO(pet.getCustomer());
     }
 
-    public Customer convertCustomerToEntity(CustomerDTO customerDTO) {
+    private Customer convertCustomerToEntity(CustomerDTO customerDTO) {
 
         Customer customer = new Customer();
+
         BeanUtils.copyProperties(customerDTO, customer);
+
         return customer;
     }
 
-    public CustomerDTO convertCustomerToDTO(Customer customer) {
-
-        System.out.println(customer.getId());
+    private CustomerDTO convertCustomerToDTO(Customer customer) {
 
         CustomerDTO customerDTO = new CustomerDTO();
+
         BeanUtils.copyProperties(customer, customerDTO);
 
         ArrayList<Long> petIds = new ArrayList<>();
@@ -72,7 +73,7 @@ public class CustomerService {
         return customerDTO;
     }
 
-    public List<CustomerDTO> convertCustomerToList(List<Customer> customers) {
+    private List<CustomerDTO> convertCustomerToList(List<Customer> customers) {
 
         ArrayList<CustomerDTO> toReturn = new ArrayList<>();
 

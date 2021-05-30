@@ -41,10 +41,12 @@ public class PetService {
         else {
 
             pets = new ArrayList<Pet>();
+
             pets.add(pet);
         }
 
         customer.setPets(pets);
+
         customerRepository.save(customer);
 
         return convertPetToDTO(pet);
@@ -73,7 +75,7 @@ public class PetService {
         return convertPetToList(pets);
     }
 
-    public Pet convertPetToEntity(PetDTO petDTO) {
+    private Pet convertPetToEntity(PetDTO petDTO) {
 
         Pet pet = new Pet();
 
@@ -86,7 +88,7 @@ public class PetService {
         return pet;
     }
 
-    public PetDTO convertPetToDTO(Pet pet) {
+    private PetDTO convertPetToDTO(Pet pet) {
 
         PetDTO petDTO = new PetDTO();
 
@@ -99,7 +101,7 @@ public class PetService {
         return petDTO;
     }
 
-    public List<PetDTO> convertPetToList(List<Pet> pets) {
+    private List<PetDTO> convertPetToList(List<Pet> pets) {
 
         ArrayList<PetDTO> toReturn = new ArrayList<>();
 

@@ -63,31 +63,33 @@ public class EmployeeService {
         return toReturn;
     }
 
-    public Employee convertEmployeeToEntity(EmployeeDTO employeeDTO) {
+    private Employee convertEmployeeToEntity(EmployeeDTO employeeDTO) {
 
         Employee employee = new Employee();
 
         BeanUtils.copyProperties(employeeDTO, employee);
 
         employee.setDaysAvailable(employeeDTO.getDaysAvailable());
+
         employee.setSkills(employeeDTO.getSkills());
 
         return employee;
     }
 
-    public EmployeeDTO convertEmployeeToDTO(Employee employee) {
+    private EmployeeDTO convertEmployeeToDTO(Employee employee) {
 
         EmployeeDTO employeeDTO = new EmployeeDTO();
 
         BeanUtils.copyProperties(employee, employeeDTO);
 
         employeeDTO.setDaysAvailable(employee.getDaysAvailable());
+
         employeeDTO.setSkills(employee.getSkills());
 
         return employeeDTO;
     }
 
-    public List<EmployeeDTO> convertEmployeeToList(List<Employee> employees) {
+    private List<EmployeeDTO> convertEmployeeToList(List<Employee> employees) {
 
         ArrayList<EmployeeDTO> toReturn = new ArrayList<>();
 
