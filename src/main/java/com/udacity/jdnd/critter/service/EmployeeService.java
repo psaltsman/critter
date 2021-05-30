@@ -56,7 +56,11 @@ public class EmployeeService {
             //Only add the employees that have all of the requested skills for the requested day
             if (employee.getSkills().containsAll(employeeSkills)) {
 
-                toReturn.add(convertEmployeeToDTO(employee));
+                EmployeeDTO toAdd = convertEmployeeToDTO(employee);
+
+                if (!toReturn.contains(toAdd)) {
+                    toReturn.add(toAdd);
+                }
             }
         }
 
